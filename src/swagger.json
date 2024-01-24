@@ -1,0 +1,101 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "API de Upload de Imagens",
+      "description": "API para upload e recuperação de imagens",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/upload": {
+        "post": {
+          "summary": "Upload de imagem",
+          "description": "Endpoint para fazer upload de uma imagem",
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Arquivo enviado com sucesso",
+              "content": {
+                "text/plain": {
+                  "example": "Arquivo enviado com sucesso!"
+                }
+              }
+            },
+            "400": {
+              "description": "Erro ao enviar o arquivo",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "message": "erro: mensagem de erro",
+                    "status": "Erro"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/{filename}": {
+        "get": {
+          "summary": "Recuperação de imagem",
+          "description": "Endpoint para recuperar uma imagem pelo nome do arquivo",
+          "parameters": [
+            {
+              "name": "filename",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Nome do arquivo da imagem"
+            },
+            {
+              "name": "size",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "enum": ["min", "full"]
+              },
+              "description": "Tamanho da imagem (opcional)"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Arquivo de imagem",
+              "content": {
+                "image/png": {},
+                "image/jpeg": {},
+                "image/webp": {},
+                "image/gif": {}
+              }
+            },
+            "400": {
+              "description": "Erro ao recuperar o arquivo",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "message": "erro: mensagem de erro",
+                    "status": "Erro"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  

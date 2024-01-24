@@ -3,6 +3,8 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocs from "./swagger.json";
 
 import { Request, Response } from "express";
 import multerStorage from "./util/multerStorage";
@@ -31,6 +33,11 @@ export class App {
     this.app.use(cors());
     this.app.set("view engine", "ejs");
     this.app.set("views", "views");
+    this.app.use(
+      "/api-docs",
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerDocs)
+    );
   }
   
   routes() {

@@ -14,9 +14,6 @@ import parseFileName from "./util/parseFileName";
 import { MediaType } from "./types/MediaType";
 import preparedFileDetails from "./util/preparedFileDetails";
 import compressedImage from "./util/compressedImage";
-// import fileExtLimiter from "./middleware/fileExtLimiter";
-// import filePayloadExists from "./middleware/filesPayloadExists";
-// import fileSizeLimiter from "./middleware/fileSizeLimiter";
 
 export class App {
   public app: express.Application;
@@ -44,13 +41,15 @@ export class App {
     const upload = multer({ storage: multerStorage });
 
     this.app.post("/upload", upload.single("file"), fileValidationMiddleware, async(req: Request, res: Response) => {
-      const { file } = req;
+      const { file, body } = req;
+      const quality = body.quality ? parseInt(body.quality, 10) : 50;
+
       console.log(file);
       res.send("Arquivo enviado com sucesso!");
 
       if (file){
         const { fullFilePath, compressedFilePath, ext } = preparedFileDetails(file);
-        res.on("finish", async() => await compressedImage(fullFilePath, compressedFilePath, 50, ext as MediaType));
+        res.on("finish", async() => await compressedImage(fullFilePath, compressedFilePath, quality, ext as MediaType));
       }
     });
 

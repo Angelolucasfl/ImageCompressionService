@@ -25,15 +25,14 @@ export class App {
   }
   
   private config(): void {
+    const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(express.json());
     this.app.use(cors());
-    this.app.set("view engine", "ejs");
-    this.app.set("views", "views");
     this.app.use(
       "/api-docs",
       swaggerUi.serve,
-      swaggerUi.setup(swaggerDocs)
+      swaggerUi.setup(swaggerDocs, { customCssUrl: CSS_URL })
     );
   }
   

@@ -25,22 +25,14 @@ export class App {
   }
   
   private config(): void {
-    const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
-    const JS_BUNDLE_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui-bundle.js";
-    const JS_PRESET_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui-standalone-preset.js";
-
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(express.json());
     this.app.use(cors());
-
-    // Servir Swagger UI diretamente
-    this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
-      customCssUrl: CSS_URL,
-      customJs: JS_BUNDLE_URL,
-      swaggerOptions: {
-        presets: [JS_PRESET_URL],
-      },
-    }));
+    this.app.use(
+      "/api-docs",
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerDocs)
+    );
   }
   
   routes() {
